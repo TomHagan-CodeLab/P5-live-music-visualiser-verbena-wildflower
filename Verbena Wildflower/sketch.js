@@ -19,7 +19,7 @@ function setup() {
   fft = new p5.FFT();
   fft.setInput(mic);
   
-  slider1 = createSlider(1,6,1);
+  slider1 = createSlider(0,5,0);
   slider2 = createSlider(0,225,225);
   slider3 = createSlider(0,225,130);
     slider1.position(1038,379);
@@ -84,7 +84,6 @@ function setup() {
 
 //Fullscreen Visualiser Changes    
     cyNumberChange = 13;
-    rectWidthChange = 1;
     spectrumMultiplyer = 1;
     
 }
@@ -118,15 +117,15 @@ function draw() {
   capture.loadPixels();
   spectrum = fft.analyze();
   noStroke();
-  fill([HighMids + Highs]*1.5, slider2.value() + Mids, [Lows + LowMids]/2,150);
+  fill([HighMids + Highs]*1.5, slider2.value() + Mids, [Lows + LowMids]/2,70*[slider1.value()+1]/1.5);
 
   for (var cy = 0; cy < capture.height; cy += cyNumberChange) {
-    for (var cx = 0; cx < capture.width; cx += slider1.value()) {
+    for (var cx = 0; cx < capture.width; cx += 1+slider1.value()) {
       var offset = ((cy * capture.width) + cx) * 4;
       var xpos = (cx / capture.width) * width;
       var ypos = (cy / capture.height) * height;
         
-      rect(xpos, ypos, rectWidthChange, spectrum[cy] * spectrumMultiplyer * (capture.pixels[offset + 1] / 225)); 
+      rect(xpos, ypos, 6-slider1.value(), spectrum[cy] * spectrumMultiplyer * (capture.pixels[offset + 1] / 225)); 
     
   //TRANSFORM//
         
@@ -185,7 +184,6 @@ function fullScreen() {
         paragraph1.style('display:block');
                 
     cyNumberChange = 13;
-    rectWidthChange = 1;
     spectrumMultiplyer = 1;
     transparencyChange = 255;
 
@@ -221,7 +219,6 @@ function fullScreen() {
         
                       
     cyNumberChange = 11;
-    rectWidthChange = 2;
     spectrumMultiplyer = 1.5;
     
     }
